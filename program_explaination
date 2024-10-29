@@ -1,0 +1,35 @@
+To create an application that automatically adjusts the number of replicas to maintain an average CPU usage of 80%, we’ll take the following approach:
+
+Get the Current Status: Use the /app/status endpoint to retrieve the current CPU usage and replica count.
+Calculate Needed Replicas: If the CPU utilization is not at the target level, calculate how many replicas are needed to adjust the CPU usage to the desired average (0.80).
+Update Replica Count: Use the /app/replicas endpoint to update the replica count if adjustments are needed.
+Run Continuously: Implement a loop to continuously monitor and adjust as necessary.
+
+Explanation and Considerations:
+Scaling Logic: The calculate_desired_replicas function calculates the required replicas based on the formula:
+
+desired_replicas
+=
+current_replicas
+×
+(
+current_cpu
+TARGET_CPU_UTILIZATION
+)
+desired_replicas=current_replicas×( 
+TARGET_CPU_UTILIZATION
+current_cpu
+​
+ )
+This formula keeps the CPU usage per replica near 0.80 by adjusting the number of replicas proportionally.
+
+Error Handling: requests.raise_for_status() is used to raise exceptions on HTTP errors. A robust solution would add additional error handling, especially around rate limiting and retries.
+
+Continuous Loop: The auto_scale function runs indefinitely, checking every 30 seconds. In a production setting, this interval might be configurable based on the app’s performance characteristics.
+
+Real-world Considerations:
+
+Configuration Management: Instead of hardcoding constants like TARGET_CPU_UTILIZATION, you’d typically store them in a configuration file or environment variables.
+Logging and Monitoring: A production system would implement proper logging and monitoring to track when replicas are scaled.
+Rate Limiting: To avoid hitting API rate limits, consider exponential backoff or caching API responses if the status endpoint is costly.
+Testing: Unit tests and integration tests should validate that each function behaves as expected, especially calculate_desired_replicas.
