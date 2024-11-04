@@ -1,6 +1,4 @@
 
-markdown
-Copy code
 # Auto-Scaler Application
 
 This application is designed to automatically adjust the number of replicas of a service based on its current CPU utilization. It continuously monitors the service’s CPU usage and adjusts the replica count to keep the CPU utilization at or near a target value.
