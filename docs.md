@@ -1,4 +1,3 @@
-Here's the complete README.md file with all the details consolidated for easy copying:
 
 markdown
 Copy code
